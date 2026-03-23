@@ -2,7 +2,6 @@
 
 namespace App\Modules\Composers\Core\Repositories;
 
-use App\Modules\Shared\Core\Repositories\AbstractEntityRepository;
 use App\Modules\Shared\Core\Traits\Repositories\CountAllTrait;
 use App\Modules\Shared\Core\Traits\Repositories\FindAllTrait;
 use App\Modules\Shared\Core\Traits\Repositories\FindByIdTrait;
