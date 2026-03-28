@@ -16,10 +16,6 @@ trait FindAllPaginatedTrait
     {
         $page = $this->getRepository()->findAllPaginated($dto);
 
-        if ($page->getQuantity() < 1) {
-            throw new Exception();
-        }
-
         return $this->entityPageToDtoPage($page);
     }
 
