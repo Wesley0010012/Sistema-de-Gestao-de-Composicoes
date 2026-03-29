@@ -6,7 +6,7 @@ use DateTime;
 
 abstract class AbstractEntity
 {
-    private int $id;
+    private ?int $id;
     private DateTime $createdAt;
     private DateTime $updatedAt;
     private bool $active;
@@ -23,7 +23,7 @@ abstract class AbstractEntity
         $this->active = $active;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
