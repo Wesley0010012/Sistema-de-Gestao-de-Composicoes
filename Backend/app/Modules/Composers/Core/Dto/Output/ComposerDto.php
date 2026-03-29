@@ -3,6 +3,7 @@
 namespace App\Modules\Composers\Core\Dto\Output;
 
 use DateTime;
+use Illuminate\Support\Facades\Storage;
 
 class ComposerDto
 {
@@ -30,7 +31,7 @@ class ComposerDto
     ) {
         $this->id = $id;
         $this->name = $name;
-        $this->photoPath = $photoPath;
+        $this->photoPath = !is_null($photoPath) ? Storage::disk('public')->url($photoPath) : null;
         $this->birthDate = $birthDate;
         $this->deathDate = $deathDate;
         $this->nationality = $nationality;
