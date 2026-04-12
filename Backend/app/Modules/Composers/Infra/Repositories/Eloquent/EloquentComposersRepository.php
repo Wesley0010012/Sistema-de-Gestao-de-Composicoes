@@ -120,6 +120,36 @@ class EloquentComposersRepository extends ComposersRepository
         return ((fn($i): ComposerModel => $i)($model))->toEntity();
     }
 
+    public function update(AbstractEntity $entity): void
+    {
+        /** @var \App\Modules\Composers\Core\Entities\Composer $entity */
+
+        DB::transaction(function () use ($entity) {
+
+            $model = new ComposerModel();
+
+            $model->id = $entity->getId();
+            $model->name = $entity->getName();
+            $model->nationality_id = $entity->getNationality()->getId();
+            $model->photo_path = $entity->getPhotoPath();
+
+            $model->birth_date = $entity->getBirthDate()->format('Y-m-d');
+
+            $model->death_date = $entity->getDeathDate()
+                ? $entity->getDeathDate()->format('Y-m-d')
+                : null;
+
+            $model->active = true;
+
+            $model->update();
+
+            if (!empty($entity->getPeriods())) {
+                $periods = $entity->getPeriods();
+                array_walk($periods, fn(Period $period) => $model->periods()->sync($period->getId()));
+            }
+        });
+    }
+
     public function deleteById(int $id): void
     {
         ComposerModel::where('id', '=', $id)
