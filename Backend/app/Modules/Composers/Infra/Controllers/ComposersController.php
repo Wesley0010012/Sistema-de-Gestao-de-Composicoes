@@ -4,6 +4,7 @@ namespace App\Modules\Composers\Infra\Controllers;
 
 use App\Modules\Composers\Core\Services\ComposersService;
 use App\Modules\Composers\Infra\Requests\AddComposerRequest;
+use App\Modules\Composers\Infra\Requests\UpdateComposerRequest;
 use App\Modules\Shared\Infra\Traits\Controllers\CountAllTrait;
 use App\Modules\Shared\Infra\Traits\Controllers\DeleteByIdTrait;
 use App\Modules\Shared\Infra\Traits\Controllers\FindAllPaginatedTrait;
@@ -28,5 +29,10 @@ class ComposersController
     public function add(AddComposerRequest $request)
     {
         return response()->json($this->service->add($request->toDto()));
+    }
+
+    public function update(UpdateComposerRequest $request, int $id)
+    {
+        return response()->json($this->service->update($request->toDto(), $id));
     }
 }
