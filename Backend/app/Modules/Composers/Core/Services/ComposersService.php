@@ -4,6 +4,7 @@ namespace App\Modules\Composers\Core\Services;
 
 use App\Modules\Composers\Core\Dto\AddComposerDto;
 use App\Modules\Composers\Core\Dto\Output\ComposerDto;
+use App\Modules\Composers\Core\Dto\UpdateComposerDto;
 use App\Modules\Composers\Core\Entities\Composer;
 use App\Modules\Composers\Core\Entities\Period;
 use App\Modules\Composers\Core\Repositories\ComposersRepository;
@@ -15,11 +16,12 @@ use App\Modules\Shared\Core\Traits\Services\EntityToDtoTrait;
 use App\Modules\Shared\Core\Traits\Services\FindAllPaginatedTrait;
 use App\Modules\Shared\Core\Traits\Services\FindAllTrait;
 use App\Modules\Shared\Core\Traits\Services\FindEntityByIdTrait;
+use App\Modules\Shared\Core\Traits\Services\UpdateEntityTrait;
 use Exception;
 
 class ComposersService
 {
-    use AddEntityTrait, EntityToDtoTrait, DeleteByIdTrait, FindAllTrait, FindEntityByIdTrait, FindAllPaginatedTrait, CountAllTrait;
+    use UpdateEntityTrait, AddEntityTrait, EntityToDtoTrait, DeleteByIdTrait, FindAllTrait, FindEntityByIdTrait, FindAllPaginatedTrait, CountAllTrait;
 
     public function __construct(
         private readonly ComposersRepository $repository,
@@ -34,6 +36,26 @@ class ComposersService
         if ($this->repository->existsByName($composer->getName())) {
             throw new Exception();
         }
+    }
+
+    protected function updateInputToEntity(mixed $updateInput, int $id): AbstractEntity
+    {
+        $updateComposerDto = (fn($i): UpdateComposerDto => $i)($updateInput);
+
+        $nationality = $this->nationalitiesService->findById($updateComposerDto->getNationalityId());
+
+        $periods = $this->periodsService->findManyByMultiplesIds($updateComposerDto->getPeriodsIds());
+
+        $composer = (fn($i): Composer => $i)($this->findById($id));
+
+        $composer->setName($updateComposerDto->getName());
+        $composer->setPhotoPath($updateComposerDto->getPhotoPath());
+        $composer->setBirthDate($updateComposerDto->getBirthDate());
+        $composer->setDeathDate($updateComposerDto->getDeathDate());
+        $composer->setNationality($nationality);
+        $composer->setPeriods($periods);
+
+        return $composer;
     }
 
     protected function addInputToEntity(mixed $addInput): AbstractEntity
