@@ -55,7 +55,7 @@ class Composer extends AbstractEntity
         return $this->photoPath;
     }
 
-    public function setPhotoPath(string $photoPath): void
+    public function setPhotoPath(?string $photoPath): void
     {
         $this->photoPath = $photoPath;
     }
