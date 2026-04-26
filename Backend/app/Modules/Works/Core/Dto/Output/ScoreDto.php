@@ -3,6 +3,7 @@
 namespace App\Modules\Works\Core\Dto\Output;
 
 use App\Modules\Works\Core\Dto\InstrumentDto;
+use Illuminate\Support\Facades\Storage;
 
 class ScoreDto
 {
@@ -16,7 +17,7 @@ class ScoreDto
         InstrumentDto $instrument
     ) {
         $this->id = $id;
-        $this->path = $path;
+        $this->path = Storage::disk('public')->url($path);
         $this->instrument = $instrument;
     }
 }
