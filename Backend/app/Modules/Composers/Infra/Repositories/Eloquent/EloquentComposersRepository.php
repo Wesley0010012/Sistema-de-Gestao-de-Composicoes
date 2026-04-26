@@ -126,7 +126,7 @@ class EloquentComposersRepository extends ComposersRepository
 
         DB::transaction(function () use ($entity) {
 
-            $model = new ComposerModel();
+            $model = ComposerModel::findOrFail($entity->getId());
 
             $model->id = $entity->getId();
             $model->name = $entity->getName();
@@ -139,13 +139,16 @@ class EloquentComposersRepository extends ComposersRepository
                 ? $entity->getDeathDate()->format('Y-m-d')
                 : null;
 
-            $model->active = true;
-
             $model->update();
 
             if (!empty($entity->getPeriods())) {
                 $periods = $entity->getPeriods();
-                array_walk($periods, fn(Period $period) => $model->periods()->sync($period->getId()));
+                $periodsIds = array_map(
+                    fn(Period $period) => $period->getId(),
+                    $periods
+                );
+
+                $model->periods()->sync($periodsIds);
             }
         });
     }
