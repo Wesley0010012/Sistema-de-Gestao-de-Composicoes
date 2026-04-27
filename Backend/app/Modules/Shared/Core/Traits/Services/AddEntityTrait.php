@@ -6,11 +6,9 @@ use App\Modules\Shared\Core\Entities\AbstractEntity;
 
 trait AddEntityTrait
 {
-    use GetRepositoryTrait, EntityToDtoTrait;
+    use GetRepositoryTrait, EntityToDtoTrait, AddInputToEntityTrait;
 
     protected abstract function applyAddRules(AbstractEntity $entity): void;
-
-    protected abstract function addInputToEntity(mixed $addInput): AbstractEntity;
 
     public function add(mixed $input): mixed
     {
