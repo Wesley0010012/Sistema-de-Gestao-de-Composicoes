@@ -7,6 +7,14 @@ use App\Modules\Works\Infra\Repositories\Eloquent\Models\GenreModel;
 
 class EloquentGenresRepository extends GenresRepository
 {
+    public function findManyByMultiplesIds(array $ids): array
+    {
+        return GenreModel::whereIn('id', $ids)
+            ->get()
+            ->map(fn(GenreModel $i) => $i->toEntity())
+            ->toArray();
+    }
+
     public function findAll(): array
     {
         return GenreModel::all()
