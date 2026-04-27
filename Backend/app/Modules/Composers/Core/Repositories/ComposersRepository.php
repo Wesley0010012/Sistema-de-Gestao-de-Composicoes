@@ -7,12 +7,13 @@ use App\Modules\Shared\Core\Traits\Repositories\CountAllTrait;
 use App\Modules\Shared\Core\Traits\Repositories\FindAllPaginatedTrait;
 use App\Modules\Shared\Core\Traits\Repositories\FindAllTrait;
 use App\Modules\Shared\Core\Traits\Repositories\FindByIdTrait;
+use App\Modules\Shared\Core\Traits\Repositories\FindManyByMultiplesIdsTrait;
 use App\Modules\Shared\Core\Traits\Repositories\UpdateTrait;
 use App\Modules\Shared\Core\Traits\Services\DeleteByIdTrait;
 
 abstract class ComposersRepository
 {
-    use FindAllPaginatedTrait, UpdateTrait, AddTrait, FindAllTrait, CountAllTrait, FindByIdTrait, DeleteByIdTrait;
+    use FindAllPaginatedTrait, UpdateTrait, AddTrait, FindAllTrait, CountAllTrait, FindByIdTrait, DeleteByIdTrait, FindManyByMultiplesIdsTrait;
 
     public abstract function existsByName(string $name): bool;
 

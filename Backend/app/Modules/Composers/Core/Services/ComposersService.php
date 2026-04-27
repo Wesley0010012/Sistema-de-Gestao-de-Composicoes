@@ -16,12 +16,13 @@ use App\Modules\Shared\Core\Traits\Services\EntityToDtoTrait;
 use App\Modules\Shared\Core\Traits\Services\FindAllPaginatedTrait;
 use App\Modules\Shared\Core\Traits\Services\FindAllTrait;
 use App\Modules\Shared\Core\Traits\Services\FindEntityByIdTrait;
+use App\Modules\Shared\Core\Traits\Services\FindManyByMultiplesIdsTrait;
 use App\Modules\Shared\Core\Traits\Services\UpdateEntityTrait;
 use Exception;
 
 class ComposersService
 {
-    use UpdateEntityTrait, AddEntityTrait, EntityToDtoTrait, DeleteByIdTrait, FindAllTrait, FindEntityByIdTrait, FindAllPaginatedTrait, CountAllTrait;
+    use UpdateEntityTrait, AddEntityTrait, EntityToDtoTrait, DeleteByIdTrait, FindAllTrait, FindEntityByIdTrait, FindAllPaginatedTrait, CountAllTrait, FindManyByMultiplesIdsTrait;
 
     public function __construct(
         private readonly ComposersRepository $repository,

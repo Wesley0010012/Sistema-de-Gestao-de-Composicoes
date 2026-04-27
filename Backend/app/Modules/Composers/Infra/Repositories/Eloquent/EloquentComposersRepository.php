@@ -14,6 +14,22 @@ use Illuminate\Support\Facades\DB;
 
 class EloquentComposersRepository extends ComposersRepository
 {
+    public function findManyByMultiplesIds(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $models = ComposerModel::with(['nationality', 'periods'])
+            ->whereIn('id', $ids)
+            ->where('active', true)
+            ->get();
+
+        return $models
+            ->map(fn(EloquentEntity $model) => $model->toEntity())
+            ->toArray();
+    }
+
     public function existsByName(string $name): bool
     {
         return ComposerModel::where('name', $name)
