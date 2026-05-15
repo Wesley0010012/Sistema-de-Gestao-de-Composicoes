@@ -4,13 +4,14 @@ namespace App\Modules\Works\Core\Services;
 
 use App\Modules\Shared\Core\Entities\AbstractEntity;
 use App\Modules\Shared\Core\Traits\Services\FindAllTrait;
+use App\Modules\Shared\Core\Traits\Services\FindByIdTrait;
 use App\Modules\Works\Core\Dto\InstrumentDto;
 use App\Modules\Works\Core\Entities\Instrument;
 use App\Modules\Works\Core\Repositories\InstrumentsRepository;
 
 class InstrumentsService
 {
-    use FindAllTrait;
+    use FindAllTrait, FindByIdTrait;
 
     public function __construct(
         private readonly InstrumentsRepository $repository

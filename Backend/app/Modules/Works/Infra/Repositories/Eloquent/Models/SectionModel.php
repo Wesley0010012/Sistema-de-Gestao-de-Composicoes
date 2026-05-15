@@ -30,6 +30,11 @@ class SectionModel extends EloquentEntity
         return $this->hasMany(ScoreModel::class, 'section_id');
     }
 
+    public function work()
+    {
+        return $this->belongsTo(WorkModel::class, 'work_id');
+    }
+
     public function toEntity(): AbstractEntity
     {
         $scores = $this->scores

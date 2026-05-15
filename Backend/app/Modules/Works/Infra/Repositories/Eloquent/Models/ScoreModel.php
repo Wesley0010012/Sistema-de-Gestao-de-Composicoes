@@ -27,6 +27,11 @@ class ScoreModel extends EloquentEntity
         return $this->belongsTo(InstrumentModel::class, 'instrument_id');
     }
 
+    public function section()
+    {
+        return $this->belongsTo(SectionModel::class, 'section_id');
+    }
+
     public function toEntity(): AbstractEntity
     {
         $instrument = (fn($i): InstrumentModel => $i)($this->instrument)->toEntity();
