@@ -1,0 +1,118 @@
+@media (max-width: 767.98px) {
+  .container-fluid.bg-light.min-vh-100 {
+    padding: 1rem !important;
+  }
+
+  .navbar .container-fluid {
+    gap: 0.75rem;
+  }
+
+  .navbar-brand {
+    max-width: calc(100vw - 5rem);
+    margin-right: 0;
+  }
+
+  .navbar-brand span {
+    font-size: 0.95rem;
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .navbar-collapse {
+    width: 100%;
+  }
+
+  .navbar-nav {
+    padding-top: 0.75rem;
+  }
+
+  .navbar-nav .nav-link {
+    border-radius: 8px;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .card {
+    border-radius: 8px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .table-responsive {
+    border-radius: 8px;
+  }
+
+  .table-responsive table {
+    min-width: 720px;
+  }
+
+  .accordion-button {
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .accordion-button > div {
+    min-width: 0;
+  }
+
+  .accordion-button .btn,
+  table .btn {
+    min-width: 2.35rem;
+    min-height: 2.35rem;
+  }
+
+  .sticky-top {
+    position: static !important;
+  }
+
+  .form-control-lg {
+    font-size: 1rem;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .pagination .page-link {
+    min-width: 2.25rem;
+    text-align: center;
+  }
+
+  .mobile-stack {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .mobile-stack > .btn,
+  .mobile-stack > a,
+  .mobile-stack > div:last-child .btn {
+    width: 100%;
+  }
+
+  .mobile-action-row {
+    width: 100%;
+    justify-content: stretch !important;
+  }
+
+  .mobile-action-row .btn {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .btn {
+    white-space: normal;
+  }
+
+  .input-group {
+    width: 100%;
+  }
+
+  .badge {
+    white-space: normal;
+    text-align: left;
+  }
+}
