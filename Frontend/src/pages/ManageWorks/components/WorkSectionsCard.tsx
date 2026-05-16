@@ -1,11 +1,19 @@
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { FileEarmarkPdf, MusicNoteList, Plus, Trash } from "react-bootstrap-icons";
+import {
+  BoxArrowUpRight,
+  FileEarmarkPdf,
+  MusicNoteList,
+  Plus,
+  Trash,
+} from "react-bootstrap-icons";
 
 import type { Instrument } from "../../../types/Instrument";
 import type { KeyOption } from "../../../types/KeyOption";
+import { API_BASE_URL } from "../../../utils/api";
 import type { ScoreForm, SectionForm } from "../types";
 
 type WorkSectionsCardProps = {
+  allowPdfUpload: boolean;
   sections: SectionForm[];
   keyRoots: KeyOption[];
   keyModes: KeyOption[];
@@ -27,7 +35,12 @@ type WorkSectionsCardProps = {
   onRemoveScore: (sectionIndex: number, scoreIndex: number) => void;
 };
 
+function scorePdfUrl(scoreId: number): string {
+  return `${API_BASE_URL}/works/scores/${scoreId}/pdf`;
+}
+
 export function WorkSectionsCard({
+  allowPdfUpload,
   sections,
   keyRoots,
   keyModes,
@@ -184,22 +197,45 @@ export function WorkSectionsCard({
                         </Col>
 
                         <Col md={6}>
-                          <Form.Group>
-                            <Form.Label>PDF</Form.Label>
-                            <Form.Control
-                              type="file"
-                              accept="application/pdf"
-                              onChange={(event) =>
-                                onUpdateScore(
-                                  sectionIndex,
-                                  scoreIndex,
-                                  "file",
-                                  (event.currentTarget as HTMLInputElement)
-                                    .files?.[0] || null,
-                                )
-                              }
-                            />
-                          </Form.Group>
+                          {allowPdfUpload ? (
+                            <Form.Group>
+                              <Form.Label>PDF</Form.Label>
+                              <Form.Control
+                                type="file"
+                                accept="application/pdf"
+                                onChange={(event) =>
+                                  onUpdateScore(
+                                    sectionIndex,
+                                    scoreIndex,
+                                    "file",
+                                    (event.currentTarget as HTMLInputElement)
+                                      .files?.[0] || null,
+                                  )
+                                }
+                              />
+                            </Form.Group>
+                          ) : (
+                            <div>
+                              <Form.Label>PDF</Form.Label>
+                              {score.id && score.path ? (
+                                <Button
+                                  as="a"
+                                  href={scorePdfUrl(score.id)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  variant="outline-primary"
+                                  className="d-flex align-items-center justify-content-center gap-2"
+                                >
+                                  <BoxArrowUpRight />
+                                  Abrir PDF
+                                </Button>
+                              ) : (
+                                <div className="border rounded bg-light px-3 py-2 text-muted small">
+                                  Sem PDF cadastrado.
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </Col>
 
                         <Col md={1} className="text-end">

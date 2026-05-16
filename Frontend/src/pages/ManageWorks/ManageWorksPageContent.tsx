@@ -100,12 +100,13 @@ export default function ManageWorksPageContent() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleGenres = (event: ChangeEvent<HTMLSelectElement>) => {
-    const values = Array.from(event.target.selectedOptions).map((option) =>
-      Number(option.value),
-    );
-
-    setForm((prev) => ({ ...prev, genres: values }));
+  const handleGenreToggle = (genreId: number) => {
+    setForm((prev) => ({
+      ...prev,
+      genres: prev.genres.includes(genreId)
+        ? prev.genres.filter((id) => id !== genreId)
+        : [...prev.genres, genreId],
+    }));
   };
 
   const addSection = () => {
@@ -202,7 +203,7 @@ export default function ManageWorksPageContent() {
         id: score.id,
         instrumentId: Number(score.instrumentId),
         path: score.path,
-        file: score.file,
+        file: isEdit ? null : score.file,
       })),
     })),
   });
@@ -219,7 +220,7 @@ export default function ManageWorksPageContent() {
         await addWork(toPayload());
       }
 
-      navigate("/works");
+      navigate("/admin/works");
     } catch (err) {
       console.error(err);
     } finally {
@@ -247,7 +248,7 @@ export default function ManageWorksPageContent() {
           label: "Voltar",
           icon: <ArrowLeft />,
           variant: "outline-secondary",
-          onClick: () => navigate("/works"),
+          onClick: () => navigate("/admin/works"),
         }}
       />
 
@@ -260,13 +261,14 @@ export default function ManageWorksPageContent() {
               genres={genres}
               selectedGenres={form.genres}
               composers={form.composers}
-              onGenresChange={handleGenres}
+              onGenreToggle={handleGenreToggle}
               onComposersChange={(value) =>
                 setForm((prev) => ({ ...prev, composers: value }))
               }
             />
 
             <WorkSectionsCard
+              allowPdfUpload={!isEdit}
               sections={form.sections}
               keyRoots={keyRoots}
               keyModes={keyModes}
@@ -288,7 +290,7 @@ export default function ManageWorksPageContent() {
               scoresCount={scoresCount}
               saving={saving}
               isEdit={isEdit}
-              onCancel={() => navigate("/works")}
+              onCancel={() => navigate("/admin/works")}
             />
           </Col>
         </Row>

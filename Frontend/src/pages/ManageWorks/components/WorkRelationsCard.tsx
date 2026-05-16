@@ -1,5 +1,4 @@
 import { Card, Form } from "react-bootstrap";
-import type { ChangeEvent } from "react";
 
 import type { Genre } from "../../../types/Genre";
 import type { ComposerOption } from "../types";
@@ -9,7 +8,7 @@ type WorkRelationsCardProps = {
   genres: Genre[];
   selectedGenres: number[];
   composers: ComposerOption[];
-  onGenresChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  onGenreToggle: (genreId: number) => void;
   onComposersChange: (value: ComposerOption[]) => void;
 };
 
@@ -17,7 +16,7 @@ export function WorkRelationsCard({
   genres,
   selectedGenres,
   composers,
-  onGenresChange,
+  onGenreToggle,
   onComposersChange,
 }: WorkRelationsCardProps) {
   return (
@@ -32,17 +31,30 @@ export function WorkRelationsCard({
 
         <Form.Group className="mb-3">
           <Form.Label>Gêneros *</Form.Label>
-          <Form.Select
-            multiple
-            value={selectedGenres.map(String)}
-            onChange={onGenresChange}
-          >
-            {genres.map((genre) => (
-              <option key={genre.id} value={genre.id}>
-                {genre.name}
-              </option>
-            ))}
-          </Form.Select>
+          <div className="admin-genre-grid">
+            {genres.map((genre) => {
+              const selected = selectedGenres.includes(genre.id);
+
+              return (
+                <button
+                  key={genre.id}
+                  type="button"
+                  className={
+                    selected
+                      ? "admin-genre-card admin-genre-card-active"
+                      : "admin-genre-card"
+                  }
+                  onClick={() => onGenreToggle(genre.id)}
+                >
+                  <span>{genre.name}</span>
+                  {genre.description && <small>{genre.description}</small>}
+                </button>
+              );
+            })}
+          </div>
+          <Form.Text muted>
+            Selecione um ou mais gêneros para a obra.
+          </Form.Text>
         </Form.Group>
 
         <Form.Group>
