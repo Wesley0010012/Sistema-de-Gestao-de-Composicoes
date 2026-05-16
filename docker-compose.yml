@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: composers
+      POSTGRES_USER: composers
+      POSTGRES_PASSWORD: composers
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U composers -d composers"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    environment:
+      APP_NAME: Composers
+      APP_ENV: production
+      APP_KEY: ${APP_KEY:-base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=}
+      APP_DEBUG: "false"
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: composers
+      DB_USERNAME: composers
+      DB_PASSWORD: composers
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: sync
+      FILESYSTEM_DISK: public
+      RUN_MIGRATIONS: "true"
+      RUN_SEEDERS: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - backend_storage:/var/www/backend/storage
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "${NGINX_PORT:-8080}:80"
+    volumes:
+      - backend_storage:/var/www/backend/storage:ro
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  backend_storage:

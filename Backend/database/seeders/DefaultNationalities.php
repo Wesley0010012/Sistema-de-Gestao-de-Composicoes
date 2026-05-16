@@ -14,7 +14,7 @@ class DefaultNationalities extends Seeder
      */
     public function run(): void
     {
-        DB::table('nationalities')->truncate();
+        DB::table('nationalities')->delete();
 
         $now = Carbon::now();
 

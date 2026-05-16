@@ -15,7 +15,12 @@ export function ComposerMultiSelect({
   onChange,
 }: ComposerMultiSelectProps) {
   return (
-    <AsyncPaginate<ComposerOption, GroupBase<ComposerOption>, { page: number }>
+    <AsyncPaginate<
+      ComposerOption,
+      GroupBase<ComposerOption>,
+      { page: number },
+      true
+    >
       isMulti
       value={value}
       debounceTimeout={300}
@@ -42,7 +47,7 @@ export function ComposerMultiSelect({
           },
         };
       }}
-      onChange={(selected) => onChange([...(selected || [])])}
+      onChange={(selected) => onChange(Array.from(selected || []))}
     />
   );
 }

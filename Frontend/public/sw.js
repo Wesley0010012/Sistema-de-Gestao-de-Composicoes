@@ -1,5 +1,5 @@
-const CACHE_NAME = "scores-pwa-v1";
-const APP_SHELL = ["/", "/manifest.webmanifest", "/favicon.svg"];
+const CACHE_NAME = "scores-pwa-v3";
+const APP_SHELL = ["/", "/manifest.webmanifest", "/favicon.svg", "/pdf.worker.min.mjs"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -30,6 +30,10 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
   if (url.pathname.startsWith("/api/")) return;
   if (url.pathname.includes("/admin")) return;
+  if (url.pathname === "/pdf.worker.min.mjs") {
+    event.respondWith(fetch(request, { cache: "no-store" }));
+    return;
+  }
 
   if (request.mode === "navigate") {
     event.respondWith(

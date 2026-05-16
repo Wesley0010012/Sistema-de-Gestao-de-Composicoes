@@ -10,7 +10,8 @@ class DefaultSections extends Seeder
 {
     public function run(): void
     {
-        DB::table('sections')->truncate();
+        DB::table('scores')->delete();
+        DB::table('sections')->delete();
 
         $now = Carbon::now();
 

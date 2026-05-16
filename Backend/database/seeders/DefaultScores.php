@@ -11,7 +11,7 @@ class DefaultScores extends Seeder
 {
     public function run(): void
     {
-        DB::table('scores')->truncate();
+        DB::table('scores')->delete();
 
         $now = Carbon::now();
 

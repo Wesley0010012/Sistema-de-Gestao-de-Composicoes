@@ -1,0 +1,17 @@
+**/.git
+**/.env
+**/.bin
+**/node_modules
+**/vendor
+**/dist
+**/build
+**/.vite
+**/.cache
+Backend/database/database.sqlite
+Backend/bootstrap/cache/*.php
+Backend/storage/logs/*
+Backend/storage/framework/cache/*
+Backend/storage/framework/sessions/*
+Backend/storage/framework/views/*
+Frontend/.env
+PWA/.env

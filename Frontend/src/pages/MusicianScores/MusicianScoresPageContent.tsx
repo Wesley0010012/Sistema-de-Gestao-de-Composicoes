@@ -131,7 +131,9 @@ export function MusicianScoresPageContent() {
   }, [hasMore, loading, loadingMore, works.data.length]);
 
   const handleGenreSelect = (genreId: number | "") => {
-    const genre = genreId ? genres.find((item) => item.id === genreId) : null;
+    const genre = genreId
+      ? genres.find((item) => item.id === genreId) ?? null
+      : null;
     setSelectedGenre(genre);
   };
 
