@@ -14,9 +14,11 @@ import { SelectedNationalityContextProvider } from "./contexts/SelectedNationali
 import { SelectedPeriodContextProvider } from "./contexts/SelectedPeriodContext .tsx";
 import { SearchBarProvider } from "./contexts/SeachBarContext.tsx";
 import { ConfirmProvider } from "./contexts/ConfirmContext.tsx";
+import { registerServiceWorker } from "./utils/pwa/register-service-worker.ts";
+
+registerServiceWorker();
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
     <ConfirmProvider>
       <SearchBarProvider>
         <NationalitiesContextProvider>
@@ -37,6 +39,5 @@ createRoot(document.getElementById("root")!).render(
           </PeriodsContextProvider>
         </NationalitiesContextProvider>
       </SearchBarProvider>
-    </ConfirmProvider>
-  </StrictMode>,
+    </ConfirmProvider>,
 );
