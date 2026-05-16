@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Modules\Auth\Core\Repositories\UsersRepository;
+use App\Modules\Auth\Core\Security\EncrypterProtocol;
+use App\Modules\Auth\Infra\Repositories\Eloquent\EloquentUsersRepository;
+use App\Modules\Auth\Infra\Security\BcryptEncrypter;
 use App\Modules\Composers\Core\Repositories\ComposersRepository;
 use App\Modules\Composers\Core\Repositories\NationalitiesRepository;
 use App\Modules\Composers\Core\Repositories\PeriodsRepository;
@@ -37,5 +41,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(GenresRepository::class, EloquentGenresRepository::class);
         $this->app->bind(InstrumentsRepository::class, EloquentInstrumentsRepository::class);
         $this->app->bind(WorksRepository::class, EloquentWorksRepository::class);
+        $this->app->bind(UsersRepository::class, EloquentUsersRepository::class);
+        $this->app->bind(EncrypterProtocol::class, BcryptEncrypter::class);
     }
 }

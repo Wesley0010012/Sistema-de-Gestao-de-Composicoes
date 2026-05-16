@@ -48,24 +48,34 @@ class EloquentWorksRepository extends WorksRepository
     public function findAllPaginated(FindAllPaginatedDto $dto): EntityPage
     {
         $query = $this->baseQuery();
+        $searchFilters = [];
 
-        $query->where(function ($query) use ($dto) {
+        foreach ($dto->getFilters() as $field => $value) {
 
-            foreach ($dto->getFilters() as $field => $value) {
+            if ($field === 'genre_id') {
+                $query->whereHas('genres', function ($q) use ($value) {
+                    $q->where('genres.id', $value);
+                });
+            } elseif ($field === 'composer_id') {
+                $query->whereHas('composers', function ($q) use ($value) {
+                    $q->where('composers.id', $value);
+                });
+            } elseif ($field === 'instrument_id') {
+                $query->whereHas('sections.scores', function ($q) use ($value) {
+                    $q->where('scores.instrument_id', $value);
+                });
+            } else {
+                $searchFilters[$field] = $value;
+            }
+        }
 
-                if ($field === 'genre_id') {
-                    $query->orWhereHas('genres', function ($q) use ($value) {
-                        $q->where('genres.id', $value);
-                    });
-                } elseif ($field === 'composer_id') {
-                    $query->orWhereHas('composers', function ($q) use ($value) {
-                        $q->where('composers.id', $value);
-                    });
-                } else {
+        if (count($searchFilters) > 0) {
+            $query->where(function ($query) use ($searchFilters) {
+                foreach ($searchFilters as $field => $value) {
                     $query->orWhere($field, 'LIKE', "%{$value}%");
                 }
-            }
-        });
+            });
+        }
 
         $total = $query->count();
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Auth\Infra\Controllers\AuthController;
 use App\Modules\Composers\Infra\Controllers\ComposersController;
 use App\Modules\Composers\Infra\Controllers\NationalitiesController;
 use App\Modules\Composers\Infra\Controllers\PeriodsController;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/health', function () {
     return response(['status' => 'active']);
 });
+
+Route::prefix('auth')
+    ->controller(AuthController::class)
+    ->group(function () {
+        Route::post('/login', 'login');
+    });
 
 Route::prefix('composers')
     ->controller(ComposersController::class)
@@ -43,6 +50,8 @@ Route::prefix('works')
         Route::put('/{id}', 'update')->whereNumber('id');
         Route::post('/{workId}/scores/{scoreId}/pdf', 'uploadScorePdf')
             ->whereNumber('workId')
+            ->whereNumber('scoreId');
+        Route::get('/scores/{scoreId}/pdf', 'viewScorePdf')
             ->whereNumber('scoreId');
         Route::get('/paginated', 'findAllPaginated');
         Route::get('/count', 'countAll');
