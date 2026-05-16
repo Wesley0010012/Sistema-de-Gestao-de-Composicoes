@@ -110,7 +110,7 @@ export function WorksAccordion({
                       size="sm"
                       onClick={(event) => {
                         event.stopPropagation();
-                        navigate(`/works/update/${work.id}`);
+                        navigate(`/admin/works/update/${work.id}`);
                       }}
                     >
                       <Pencil />

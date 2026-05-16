@@ -84,7 +84,7 @@ export default function ListWorksPageContent() {
         action={{
           label: "Nova obra",
           icon: <PlusCircle />,
-          onClick: () => navigate("/works/create"),
+          onClick: () => navigate("/admin/works/create"),
         }}
       />
 

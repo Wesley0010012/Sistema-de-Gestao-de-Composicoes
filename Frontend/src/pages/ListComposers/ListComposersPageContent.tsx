@@ -137,7 +137,7 @@ export function ListComposersPageContent() {
         action={{
           label: "Novo compositor",
           icon: <PersonPlus />,
-          onClick: () => navigate("/composers/create"),
+          onClick: () => navigate("/admin/composers/create"),
         }}
       />
 

@@ -113,7 +113,7 @@ export function ComposersTable({ composers, onDelete }: ComposersTableProps) {
                       variant="outline-success"
                       size="sm"
                       onClick={() =>
-                        navigate(`/composers/update/${composer.id}`)
+                        navigate(`/admin/composers/update/${composer.id}`)
                       }
                     >
                       <Pencil />

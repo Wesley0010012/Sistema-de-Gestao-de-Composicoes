@@ -46,7 +46,7 @@ type ProviderProps = {
 
 export function ComposersPageContextProvider({ children }: ProviderProps) {
   const [state, setState] = useState<Page<Composer[]>>(initialState.state);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const refresh = () => {

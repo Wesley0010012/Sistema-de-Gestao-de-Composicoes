@@ -136,7 +136,7 @@ export function ManageComposersPageContent() {
         await addComposer(payload);
       }
 
-      navigate("/composers");
+      navigate("/admin/composers");
     } catch (err) {
       console.error(err);
     } finally {
@@ -159,7 +159,7 @@ export function ManageComposersPageContent() {
           label: "Voltar",
           icon: <ArrowLeft />,
           variant: "outline-secondary",
-          onClick: () => navigate("/composers"),
+          onClick: () => navigate("/admin/composers"),
         }}
       />
 
@@ -194,7 +194,7 @@ export function ManageComposersPageContent() {
                 setPreview(null);
                 setSelectedFile(null);
               }}
-              onCancel={() => navigate("/composers")}
+              onCancel={() => navigate("/admin/composers")}
             />
           </Col>
         </Row>
