@@ -3,10 +3,11 @@
 namespace App\Modules\Auth\Infra\Repositories\Eloquent\Models;
 
 use App\Modules\Auth\Core\Entities\User;
+use App\Modules\Shared\Infra\Repositories\Eloquent\Models\EloquentEntity;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
-class UserModel extends Model
+class UserModel extends EloquentEntity
 {
     protected $table = 'users';
 

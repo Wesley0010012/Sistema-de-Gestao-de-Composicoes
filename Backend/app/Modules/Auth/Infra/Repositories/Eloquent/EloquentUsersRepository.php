@@ -6,6 +6,7 @@ use App\Modules\Auth\Core\Entities\User;
 use App\Modules\Auth\Core\Repositories\UsersRepository;
 use App\Modules\Auth\Infra\Repositories\Eloquent\Models\UserModel;
 use App\Modules\Shared\Infra\Repositories\Eloquent\Models\EloquentEntity;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 class EloquentUsersRepository extends UsersRepository
