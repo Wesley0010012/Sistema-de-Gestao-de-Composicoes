@@ -36,11 +36,20 @@ export async function getAllWorksPaginated(
   composer: Composer | null,
   title: string,
   subtitle: string,
+  instrumentId?: number | null,
+  perPage?: number,
 ): Promise<Page<Work[]>> {
+  const params = new URLSearchParams({ page: String(pageNumber) });
+
+  if (perPage) params.append("perPage", String(perPage));
+  if (genre) params.append("genre_id", String(genre.id));
+  if (composer) params.append("composer_id", String(composer.id));
+  if (instrumentId) params.append("instrument_id", String(instrumentId));
+  if (title.length > 0) params.append("title", title);
+  if (subtitle.length > 0) params.append("subtitle", subtitle);
+
   return await api
-    .get(
-      `/works/paginated?page=${pageNumber}${genre ? `&genre_id=${genre.id}` : ""}${composer ? `&composer_id=${composer.id}` : ""}${title.length > 0 ? `&title=${title}` : ""}${subtitle.length > 0 ? `&subtitle=${subtitle}` : ""}`,
-    )
+    .get(`/works/paginated?${params.toString()}`)
     .then((response) => response.data);
 }
 

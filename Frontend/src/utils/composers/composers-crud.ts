@@ -30,12 +30,20 @@ export async function getAllComposersPaginated(
   nationality: Nationality | null,
   period: Period | null,
   name: string | null,
+  perPage?: number,
 ): Promise<Page<Composer[]>> {
+  const page = Math.max(1, pageNumber);
+  const params = new URLSearchParams({
+    page: String(page),
+  });
+
+  if (perPage) params.set("perPage", String(perPage));
+  if (nationality) params.set("nationality_id", String(nationality.id));
+  if (period) params.set("period_id", String(period.id));
+  if (name) params.set("name", name);
+
   return await api
-    .get(
-      `/composers/paginated?page=${pageNumber}${nationality ? `&nationality_id=${nationality.id}` : ""}${period ? `&period_id=${period.id}` : ""}
-      ${name ? `&name=${name}` : ""}`,
-    )
+    .get(`/composers/paginated?${params.toString()}`)
     .then((response) => response.data);
 }
 
