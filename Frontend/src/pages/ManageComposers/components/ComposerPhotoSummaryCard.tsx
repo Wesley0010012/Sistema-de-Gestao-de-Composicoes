@@ -2,6 +2,8 @@ import { Button, Card, Form } from "react-bootstrap";
 import { Camera, Save, Trash } from "react-bootstrap-icons";
 import type { ChangeEvent } from "react";
 
+import { resolveImagePath } from "../../../components/Image/CircularImage";
+
 type ComposerPhotoSummaryCardProps = {
   preview: string | null;
   isAlive: boolean;
@@ -25,6 +27,8 @@ export function ComposerPhotoSummaryCard({
   onRemovePhoto,
   onCancel,
 }: ComposerPhotoSummaryCardProps) {
+  const previewPath = preview ? resolveImagePath(preview) : null;
+
   return (
     <Card
       className="shadow-sm border-0 mb-3 text-center sticky-top"
@@ -49,14 +53,18 @@ export function ComposerPhotoSummaryCard({
             overflow: "hidden",
           }}
         >
-          {preview ? (
+          {previewPath ? (
             <img
-              src={preview}
+              src={previewPath}
               alt="preview"
               style={{
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
+              }}
+              onError={(event) => {
+                if (event.currentTarget.src.endsWith("/avatar.png")) return;
+                event.currentTarget.src = "/avatar.png";
               }}
             />
           ) : (
