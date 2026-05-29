@@ -128,6 +128,19 @@ function isMainScoresUrl(url: string, scoresUrl: string): boolean {
   return normalizedUrl === scoresUrl;
 }
 
+function isScorePdfUrl(url: string, scoresOrigin: string): boolean {
+  try {
+    const nextUrl = new URL(url);
+
+    return (
+      nextUrl.origin === scoresOrigin &&
+      /^\/api\/works\/scores\/\d+\/pdf$/.test(nextUrl.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
 export default function ScoresWebView() {
   const webViewRef = useRef<WebView>(null);
   const [loading, setLoading] = useState(true);
@@ -148,6 +161,7 @@ export default function ScoresWebView() {
 
     if (request.isTopFrame === false) return true;
     if (isInternalWebViewUrl(request.url)) return true;
+    if (isScorePdfUrl(request.url, scoresOrigin)) return false;
     if (isScoresPage(request.url, scoresOrigin)) return true;
 
     if (request.url.includes('/admin')) {

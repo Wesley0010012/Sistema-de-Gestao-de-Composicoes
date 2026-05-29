@@ -24,6 +24,23 @@ function nullableNumber(value: string): number | null {
   return value.trim() ? Number(value) : null;
 }
 
+function storagePathFromUrl(path: string): string {
+  if (!path) return "";
+
+  try {
+    const url = new URL(path, window.location.origin);
+    const storagePrefix = "/storage/";
+
+    if (url.pathname.startsWith(storagePrefix)) {
+      return decodeURIComponent(url.pathname.slice(storagePrefix.length));
+    }
+
+    return path;
+  } catch {
+    return path;
+  }
+}
+
 export default function ManageWorksPageContent() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -78,7 +95,7 @@ export default function ManageWorksPageContent() {
             scores: section.scores.map((score) => ({
               id: score.id,
               instrumentId: score.instrument.id,
-              path: score.path || "",
+              path: storagePathFromUrl(score.path),
               file: null,
             })),
           })),
@@ -203,7 +220,7 @@ export default function ManageWorksPageContent() {
         id: score.id,
         instrumentId: Number(score.instrumentId),
         path: score.path,
-        file: isEdit ? null : score.file,
+        file: score.file,
       })),
     })),
   });

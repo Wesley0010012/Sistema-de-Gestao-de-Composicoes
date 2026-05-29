@@ -1,6 +1,5 @@
 import { Accordion, Badge, Button, Card, Col, Row, Table } from "react-bootstrap";
 import {
-  Download,
   Eye,
   FileEarmarkPdf,
   MusicNoteList,
@@ -12,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { EmptyState } from "../../../components/Pages/EmptyState";
 import type { Page } from "../../../types/Page";
 import type { Work } from "../../../types/Work";
+import { API_BASE_URL } from "../../../utils/api";
 
 type WorksAccordionProps = {
   works: Page<Work[]>;
@@ -20,11 +20,8 @@ type WorksAccordionProps = {
   onDelete: (work: Work) => void;
 };
 
-function storageUrl(path: string): string {
-  if (!path) return "#";
-  if (path.startsWith("http") || path.startsWith("/")) return path;
-
-  return `http://localhost:8000/storage/${path}`;
+function scorePdfUrl(scoreId: number): string {
+  return `${API_BASE_URL}/works/scores/${scoreId}/pdf`;
 }
 
 function countScores(work: Work): number {
@@ -214,21 +211,12 @@ export function WorksAccordion({
                                 <td className="px-3 py-3">
                                   <div className="d-flex justify-content-end gap-2">
                                     <a
-                                      href={storageUrl(score.path)}
+                                      href={scorePdfUrl(score.id)}
                                       target="_blank"
                                       rel="noopener noreferrer"
                                       className="btn btn-sm btn-outline-primary d-inline-flex align-items-center"
                                     >
                                       <Eye />
-                                    </a>
-
-                                    <a
-                                      href={storageUrl(score.path)}
-                                      download
-                                      target="_blank"
-                                      className="btn btn-sm btn-outline-success d-inline-flex align-items-center"
-                                    >
-                                      <Download />
                                     </a>
                                   </div>
                                 </td>

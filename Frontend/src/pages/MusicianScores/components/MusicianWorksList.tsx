@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ChevronLeft,
   ChevronRight,
-  Download,
   Eye,
   FileEarmarkPdf,
   MusicNoteList,
@@ -53,9 +52,12 @@ function scorePdfUrl(scoreId: number): string {
   return `${API_BASE_URL}/works/scores/${scoreId}/pdf`;
 }
 
+function isScoresMobilePwa(): boolean {
+  return window.navigator.userAgent.includes("ScoresWebView");
+}
+
 function shouldLazyRenderCardPdfPreview(): boolean {
-  const userAgent = window.navigator.userAgent;
-  const isScoresWebView = userAgent.includes("ScoresWebView");
+  const isScoresWebView = isScoresMobilePwa();
   const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
 
   return isScoresWebView || isSmallScreen;
@@ -303,20 +305,6 @@ function ScoreViewerModal({
         <Button variant="outline-secondary" onClick={onHide}>
           Fechar
         </Button>
-
-        {path && (
-          <Button
-            as="a"
-            href={pdfUrl}
-            download
-            target="_blank"
-            variant="success"
-            className="d-flex align-items-center justify-content-center gap-2"
-          >
-            <Download />
-            Baixar PDF
-          </Button>
-        )}
       </Modal.Footer>
     </Modal>
   );
@@ -396,18 +384,6 @@ function ScoreCards({ scores }: { scores: ScoreCardData[] }) {
                           <Eye />
                           Abrir partitura
                         </Button>
-
-                        <Button
-                          as="a"
-                          href={scorePdfUrl(score.id)}
-                          download
-                          target="_blank"
-                          variant="outline-success"
-                          className="d-flex align-items-center justify-content-center gap-2"
-                        >
-                          <Download />
-                          Baixar PDF
-                        </Button>
                       </>
                     ) : (
                       <>
@@ -419,15 +395,6 @@ function ScoreCards({ scores }: { scores: ScoreCardData[] }) {
                         >
                           <Eye />
                           PDF indisponível
-                        </Button>
-
-                        <Button
-                          variant="outline-secondary"
-                          className="d-flex align-items-center justify-content-center gap-2"
-                          disabled
-                        >
-                          <Download />
-                          Baixar PDF
                         </Button>
                       </>
                     )}

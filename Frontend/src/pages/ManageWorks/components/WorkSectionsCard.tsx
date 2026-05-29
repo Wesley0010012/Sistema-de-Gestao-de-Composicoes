@@ -197,7 +197,7 @@ export function WorkSectionsCard({
                         </Col>
 
                         <Col md={6}>
-                          {allowPdfUpload ? (
+                          {allowPdfUpload || !score.id ? (
                             <Form.Group>
                               <Form.Label>PDF</Form.Label>
                               <Form.Control
