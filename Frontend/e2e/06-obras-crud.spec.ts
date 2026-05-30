@@ -10,6 +10,7 @@ import {
   searchWork,
   selectFirstRealOption,
   uniqueName,
+  workItem,
 } from "./support/app-web";
 
 test.describe.serial("OBRAS CRUD", () => {
@@ -64,15 +65,20 @@ test.describe.serial("OBRAS CRUD", () => {
 
   test("edita dados da obra e adiciona partitura nova com PDF", async ({ page }) => {
     await searchWork(page, workTitle);
-    await page.locator(".mobile-action-row .btn-outline-success").first().click();
+    await workItem(page, workTitle)
+      .locator(".mobile-action-row .btn-outline-success")
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/admin\/works\/update\/\d+$/);
 
     await page.locator('input[name="title"]').fill(updatedWorkTitle);
     await page.locator('textarea[name="description"]').fill("Descricao alterada no E2E.");
 
-    await page.getByRole("button", { name: /Adicionar/ }).first().click();
-    await selectFirstRealOption(page.locator("select").last());
-    await page
+    const section = page.locator(".border.rounded.mb-3.overflow-hidden.bg-white").first();
+    await expect(section).toBeVisible();
+    await section.getByRole("button", { name: /Adicionar/ }).click();
+    await selectFirstRealOption(section.locator("select").last());
+    await section
       .locator('input[type="file"][accept="application/pdf"]')
       .last()
       .setInputFiles(scoreFixturePath);
@@ -81,16 +87,18 @@ test.describe.serial("OBRAS CRUD", () => {
     await expect(page).toHaveURL(/\/admin\/works$/);
 
     await searchWork(page, updatedWorkTitle);
-    await expect(
-      page.locator(".accordion-item", { hasText: updatedWorkTitle }).first(),
-    ).toBeVisible();
-    await page.locator(".accordion-button", { hasText: updatedWorkTitle }).click();
-    await expect(page.getByText(/2 partitura\(s\)/).first()).toBeVisible();
+    const updatedWorkItem = workItem(page, updatedWorkTitle);
+    await expect(updatedWorkItem).toBeVisible();
+    await updatedWorkItem.locator(".accordion-button").click();
+    await expect(updatedWorkItem.getByText(/2 partitura\(s\)/).first()).toBeVisible();
   });
 
   test("remove partitura e secao durante edicao", async ({ page }) => {
     await searchWork(page, updatedWorkTitle);
-    await page.locator(".mobile-action-row .btn-outline-success").first().click();
+    await workItem(page, updatedWorkTitle)
+      .locator(".mobile-action-row .btn-outline-success")
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/admin\/works\/update\/\d+$/);
 
     await page.locator(".border.rounded.p-3.mb-2 .btn-outline-danger").last().click();
@@ -111,7 +119,10 @@ test.describe.serial("OBRAS CRUD", () => {
     await searchWork(page, updatedWorkTitle);
 
     page.once("dialog", (dialog) => dialog.dismiss());
-    await page.locator(".mobile-action-row .btn-outline-danger").first().click();
+    await workItem(page, updatedWorkTitle)
+      .locator(".mobile-action-row .btn-outline-danger")
+      .first()
+      .click();
     await expect(
       page.locator(".accordion-item", { hasText: updatedWorkTitle }).first(),
     ).toBeVisible();

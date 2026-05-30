@@ -197,13 +197,18 @@ export async function searchWork(page: Page, workTitle: string) {
   await page.getByPlaceholder("Digite o nome da obra...").fill(workTitle);
 }
 
+export function workItem(page: Page, workTitle: string) {
+  return page.locator(".accordion-item", { hasText: workTitle }).first();
+}
+
 export async function deleteWorkIfVisible(page: Page, workTitle: string) {
   await searchWork(page, workTitle);
-  const header = page.locator(".accordion-button", { hasText: workTitle });
+  const item = workItem(page, workTitle);
+  const header = item.locator(".accordion-button");
 
   if ((await header.count()) === 0) return;
 
   page.once("dialog", (dialog) => dialog.accept());
-  await page.locator(".mobile-action-row .btn-outline-danger").first().click();
+  await item.locator(".mobile-action-row .btn-outline-danger").first().click();
   await expect(page.locator(".accordion-item", { hasText: workTitle })).toHaveCount(0);
 }
